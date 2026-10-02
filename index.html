@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>A Special Question for Angel 💖</title>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&family=Sacramento&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            height: 100vh;
+            height: 100svh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 99%, #feada6 100%);
+            font-family: 'Poppins', sans-serif;
+            overflow: hidden;
+            position: fixed;
+            width: 100%;
+        }
+
+        /* Floating background hearts animation */
+        .heart-bg {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        .floating-heart {
+            position: absolute;
+            bottom: -20px;
+            background-color: rgba(255, 255, 255, 0.6);
+            display: inline-block;
+            transform: rotate(-45deg);
+            animation: floatUp 6s infinite ease-in-out;
+        }
+
+        .floating-heart::before,
+        .floating-heart::after {
+            content: "";
+            position: absolute;
+            width: inherit;
+            height: inherit;
+            background-color: inherit;
+            border-radius: 50%;
+        }
+
+        .floating-heart::before {
+            top: -50%;
+            left: 0;
+        }
+
+        .floating-heart::after {
+            top: 0;
+            left: 50%;
+        }
+
+        @keyframes floatUp {
+            0% {
+                transform: translateY(0) rotate(-45deg) scale(0.6);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-105vh) rotate(-45deg) scale(1.2);
+                opacity: 0;
+            }
+        }
+
+        /* Main Container Optimized for Phone Screens */
+        .container {
+            position: relative;
+            z-index: 2;
+            background: rgba(255, 255, 255, 0.9);
+            padding: 30px 20px;
+            border-radius: 25px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            width: 90%;
+            max-width: 380px;
+            backdrop-filter: blur(10px);
+            animation: popIn 0.8s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+        }
+
+        @keyframes popIn {
+            0% { transform: scale(0); opacity: 0; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        h1 {
+            font-family: 'Sacramento', cursive;
+            font-size: 3.2rem;
+            color: #ff3366;
+            margin-bottom: 5px;
+        }
+
+        p {
+            font-size: 1rem;
+            color: #555;
+            margin-bottom: 25px;
+            line-height: 1.5;
+        }
+
+        .btn-group {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 15px;
+            position: relative;
+            min-height: 60px;
+        }
+
+        .btn {
+            padding: 12px 28px;
+            font-size: 1rem;
+            font-weight: 600;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: transform 0.2s ease, background-color 0.2s ease;
+            outline: none;
+            touch-action: manipulation;
+        }
+
+        #yesBtn {
+            background-color: #ff3366;
+            color: white;
+            box-shadow: 0 5px 15px rgba(255, 51, 102, 0.4);
+            z-index: 10;
+            transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        #noBtn {
+            background-color: #e0e0e0;
+            color: #555;
+            position: relative;
+        }
+
+        /* Success screen styling */
+        .success-screen {
+            display: none;
+            text-align: center;
+        }
+
+        .success-screen h2 {
+            font-family: 'Sacramento', cursive;
+            font-size: 3.2rem;
+            color: #ff3366;
+            margin-bottom: 10px;
+        }
+
+        .success-screen p {
+            font-size: 1.1rem;
+            color: #444;
+        }
+
+        .sparkle {
+            font-size: 2.5rem;
+            animation: bounce 1s infinite alternate;
+        }
+
+        @keyframes bounce {
+            0% { transform: translateY(0); }
+            100% { transform: translateY(-10px); }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Floating Background Hearts -->
+    <div class="heart-bg" id="heartBg"></div>
+
+    <!-- Main Proposal Box -->
+    <div class="container" id="mainContainer">
+        <div id="questionView">
+            <h1>Hey Angel... ✨</h1>
+            <p>From the moment you came into my life, everything has felt brighter. You truly are my Angel. Will you be mine forever? 💖</p>
+            <div class="btn-group" id="btnGroup">
+                <button class="btn" id="yesBtn" onclick="handleYes()">Yes! 🥰</button>
+                <button class="btn" id="noBtn" ontouchstart="moveNoButton(event)" onclick="moveNoButton(event)">No 🙃</button>
+            </div>
+        </div>
+
+        <!-- Success View -->
+        <div class="success-screen" id="successView">
+            <div class="sparkle">💖🎉✨</div>
+            <h2>Yay! She Said Yes!</h2>
+            <p>My heart is so full! You just made me the happiest person alive, Angel! Forever starts now. 🥰🥂</p>
+        </div>
+    </div>
+
+    <script>
+        // Generate floating background hearts automatically for mobile
+        const heartBg = document.getElementById('heartBg');
+        for (let i = 0; i < 15; i++) {
+            const heart = document.createElement('div');
+            heart.classList.add('floating-heart');
+            const size = Math.random() * 15 + 10 + 'px';
+            heart.style.width = size;
+            heart.style.height = size;
+            heart.style.left = Math.random() * 100 + 'vw';
+            heart.style.animationDuration = (Math.random() * 3 + 4) + 's';
+            heart.style.animationDelay = (Math.random() * 5) + 's';
+            heartBg.appendChild(heart);
+        }
+
+        let noClickCount = 0;
+        const noPhrases = [
+            "No 🙃",
+            "Are you sure? 🥺",
+            "Think again! 💭",
+            "Wrong button! ❌",
+            "Click Yes instead! 😉",
+            "No escape now! 💕",
+            "Resistance is futile! 🚀"
+        ];
+
+        // Mobile-friendly magic teleport function
+        function moveNoButton(e) {
+            e.preventDefault(); // Prevents default click delays on touch screens
+            const noBtn = document.getElementById('noBtn');
+            const yesBtn = document.getElementById('yesBtn');
+            
+            noClickCount++;
+            
+            if (noClickCount < noPhrases.length) {
+                // Keep the button strictly inside mobile screen bounds so it doesn't overflow outside view
+                const maxX = window.innerWidth - noBtn.offsetWidth - 40;
+                const maxY = window.innerHeight - noBtn.offsetHeight - 40;
+                
+                const randomX = Math.max(20, Math.random() * maxX);
+                const randomY = Math.max(20, Math.random() * maxY);
+                
+                noBtn.style.position = 'fixed';
+                noBtn.style.left = randomX + 'px';
+                noBtn.style.top = randomY + 'px';
+                noBtn.style.zIndex = '999';
+                noBtn.innerText = noPhrases[noClickCount];
+                
+                // Make the 'Yes' button grow bigger smoothly on mobile
+                let currentScale = 1 + (noClickCount * 0.08);
+                yesBtn.style.transform = `scale(${currentScale})`;
+            } else {
+                // Ultimate magic: Converts the "No" button into a "Yes" button!
+                noBtn.style.position = 'static';
+                noBtn.innerText = "Yes! 💖";
+                noBtn.style.backgroundColor = "#ff3366";
+                noBtn.style.color = "white";
+                noBtn.ontouchstart = null;
+                noBtn.onclick = handleYes;
+            }
+        }
+
+        // Action when she clicks Yes
+        function handleYes() {
+            document.getElementById('questionView').style.display = 'none';
+            document.getElementById('successView').style.display = 'block';
+
+            // Send notification email trigger
+            sendNotificationEmail();
+        }
+
+        function sendNotificationEmail() {
+            const subject = encodeURIComponent("SHE SAID YES! 🎉💖");
+            const body = encodeURIComponent("Great news! Angel just clicked YES on your mobile proposal page! Congratulations, Akshat! ✨");
+            
+            const iframe = document.createElement('iframe');
+            iframe.style.display = 'none';
+            iframe.src = `mailto:jhaakshat048@gmail.com?subject=${subject}&body=${body}`;
+            document.body.appendChild(iframe);
+        }
+    </script>
+</body>
+</html>
